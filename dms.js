@@ -82,7 +82,7 @@
 		absDD = Math.abs(this.dd);
 		degrees = truncate(absDD);
 		minutes = truncate((absDD - degrees) * 60);
-		seconds = (absDD - degrees - minutes / 60) * 3600;
+		seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
 		return [degrees, minutes, seconds, this.hemisphere];
 	};
 
@@ -128,6 +128,10 @@
 			longitude: this.longitude.getDmsArray(),
 			latitude: this.latitude.getDmsArray()
 		};
+	};
+
+	DmsCoordinates.prototype.toString = function () {
+		return [this.latitude, this.longitude].join(", ");
 	};
 
 	DmsCoordinates.parseDms = parseDms;

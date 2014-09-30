@@ -6,6 +6,7 @@ describe("dms.js test suite", function () {
 		var lat = 46.9845854731319;
 
 		var dmsCoords = new DmsCoordinates(lat, long);
+		console.log(dmsCoords);
 
 		expect(dmsCoords instanceof DmsCoordinates).toBe(true);
 
@@ -20,5 +21,7 @@ describe("dms.js test suite", function () {
 		expect(latArray[1]).toBe(59);
 		expect(Math.round(latArray[2])).toBe(5);
 		expect(latArray[3]).toBe("N");
+
+		expect(dmsCoords.toString().match(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i)).toBeTruthy(true);
 	});
 });
