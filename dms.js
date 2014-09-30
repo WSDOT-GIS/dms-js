@@ -10,7 +10,7 @@
 		module.exports = factory();
 	} else {
 		// Browser globals (root is window)
-		root.returnExports = factory();
+		root.DmsCoordinates = factory();
 	}
 }(this, function () {
 	// Just return a value to define the module export.
@@ -50,22 +50,15 @@
 	}
 
 	/**
-	 * Represents a location on the earth in WGS 1984 coordinates.
-	 * @param {number} latitude
-	 * @param {number} longitude
+	 * Removes the decimal part of a number without rounding up.
+	 * @param {number} n
+	 * @returns {number}
 	 */
-	function DmsCoordinates(latitude, longitude) {
-		if (longitude < -180 || longitude > 180) {
-			throw RangeError("longitude must be between -180 and 180");
-		}
-		if (latitude < -90 || latitude > 90) {
-			throw RangeError("latitude must be between -90 and 90");
-		}
-		/** @member {number} */
-		this.longitude = new Dms(longitude, "long");
-		/** @member {number} */
-		this.latitude = new Dms(latitude, "lat");
+	function truncate(n) {
+		return n > 0 ? Math.floor(n) : Math.ceil(n);
 	}
+
+
 
 	function Dms(dd, longOrLat) {
 		/** @member {number} */
@@ -74,14 +67,8 @@
 		this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
 	}
 
-	/**
-	 * Removes the decimal part of a number without rounding up.
-	 * @param {number} n
-	 * @returns {number}
-	 */
-	function truncate(n) {
-		return n > 0 ? Math.floor(n) : Math.ceil(n);
-	}
+
+
 
 	/**
 	 * Returns the DMS parts as an array. 
@@ -105,6 +92,42 @@
 	Dms.prototype.toString = function () {
 		var dmsArray = this.getDmsArray();
 		return [dmsArray[0], "°", dmsArray[1], "′", dmsArray[2], '″ ', dmsArray[3]].join("");
+	};
+
+
+	/**
+	 * Represents a location on the earth in WGS 1984 coordinates.
+	 * @param {number} latitude
+	 * @param {number} longitude
+	 */
+	function DmsCoordinates(latitude, longitude) {
+		if (longitude < -180 || longitude > 180) {
+			throw RangeError("longitude must be between -180 and 180");
+		}
+		if (latitude < -90 || latitude > 90) {
+			throw RangeError("latitude must be between -90 and 90");
+		}
+		/** @member {number} */
+		this.longitude = new Dms(longitude, "long");
+		/** @member {number} */
+		this.latitude = new Dms(latitude, "lat");
+	}
+
+	/**
+	 * @typedef {Object} DmsArrays
+	 * @property {Array.<(number|string)>} longitude
+	 * @property {Array.<(number|string)>} latitude
+	 */
+
+	/**
+	 * 
+	 * @returns {DmsArrays}
+	 */
+	DmsCoordinates.prototype.getDmsArrays = function () {
+		return {
+			longitude: this.longitude.getDmsArray(),
+			latitude: this.latitude.getDmsArray()
+		};
 	};
 
 	DmsCoordinates.parseDms = parseDms;
