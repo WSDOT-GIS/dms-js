@@ -1,4 +1,5 @@
-﻿/// <reference path="dms.js"/>
+﻿/*global describe, it, DmsCoordinates, expect*/
+/// <reference path="dms.js"/>
 
 describe("dms.js test suite", function () {
 	it("test dms.js", function () {
