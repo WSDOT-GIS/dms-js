@@ -1,14 +1,16 @@
-﻿/*global describe, it, DmsCoordinates, expect*/
+﻿/*global describe, it, DmsCoordinates, expect, beforeEach*/
 /// <reference path="dms.js"/>
 
-describe("dms.js test suite", function () {
-	it("test dms.js", function () {
-		var long = -122.902336120571;
-		var lat = 46.9845854731319;
+describe("DmsCoordinates", function () {
+	var dmsCoords;
+	var long = -122.902336120571;
+	var lat = 46.9845854731319;
 
-		var dmsCoords = new DmsCoordinates(lat, long);
-		console.log(dmsCoords);
+	beforeEach(function () {
+		dmsCoords = new DmsCoordinates(lat, long);
+	});
 
+	it("(46.9845854731319, 46.9845854731319) coordinates should be ~ 46°59′5″ N, 122°54′8″ W", function () {
 		expect(dmsCoords instanceof DmsCoordinates).toBe(true);
 
 		var dmsArrays = dmsCoords.getDmsArrays();
