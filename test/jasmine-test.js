@@ -1,5 +1,5 @@
 ﻿/*global describe, it, DmsCoordinates, expect, beforeEach*/
-/// <reference path="dms.js"/>
+/// <reference path="../dms.js"/>
 
 describe("DmsCoordinates", function () {
 	var dmsCoords;
