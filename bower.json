@@ -1,6 +1,6 @@
 {
   "name": "dms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/WSDOT-GIS/dms-js",
   "authors": [
     "WSDOT"
@@ -23,6 +23,8 @@
   "ignore": [
     "**/.*",
     "*.xlsx",
+    "*.sln",
+    "*.csproj",
     "node_modules",
     "bower_components",
     "test",

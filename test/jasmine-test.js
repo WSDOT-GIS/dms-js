@@ -27,4 +27,11 @@ describe("DmsCoordinates", function () {
 
 		expect(dmsCoords.toString().match(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i)).toBeTruthy(true);
 	});
+
+	it("Regexp should work", function () {
+		var v = ["46°59′5″ N", "122°54′8″ W"];
+		v.forEach(function (s) {
+			expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true);
+		});
+	});
 });

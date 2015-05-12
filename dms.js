@@ -1,4 +1,10 @@
 ﻿/*global define,module*/
+
+/**
+ * dms module
+ * @module dms
+ */
+
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
@@ -24,10 +30,6 @@
 	// E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
 	// E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
 
-	/** Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
-	* @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
-	* @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
-	*/
 	function parseDms(dmsStr) {
 		var output = NaN, dmsMatch, degrees, minutes, seconds, hemisphere;
 		dmsMatch = dmsRe.exec(dmsStr);
@@ -96,7 +98,9 @@
 
 
 	/**
+	 * @constructor
 	 * Represents a location on the earth in WGS 1984 coordinates.
+	 * @alias module:dms
 	 * @param {number} latitude
 	 * @param {number} longitude
 	 */
@@ -120,7 +124,7 @@
 	 */
 
 	/**
-	 * 
+	 * Returns an object containing arrays containing degree / minute / second components.
 	 * @returns {DmsArrays}
 	 */
 	DmsCoordinates.prototype.getDmsArrays = function () {
@@ -130,11 +134,33 @@
 		};
 	};
 
+	/**
+	 * Returns the coordinates to a comma-separated string.
+	 * @returns {string}
+	 */
 	DmsCoordinates.prototype.toString = function () {
 		return [this.latitude, this.longitude].join(", ");
 	};
 
+	/** Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
+	 * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
+	 * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
+	 */
 	DmsCoordinates.parseDms = parseDms;
+
+	// Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
+	// E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
+	// E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
+
+	/**
+	 * A regular expression matching DMS coordinate.
+	 * Example matches: 
+	 * E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
+	 * E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
+	 * @type {RegExp}
+	 * @static
+	 */
+	DmsCoordinates.dmsRe = dmsRe;
 
 
 	return DmsCoordinates;
