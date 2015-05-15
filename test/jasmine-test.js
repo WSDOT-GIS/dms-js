@@ -1,16 +1,14 @@
-﻿/*global describe, it, DmsCoordinates, expect, beforeEach*/
+﻿/*global describe, it, DmsCoordinates, expect */
+/*jshint -W098 */
 /// <reference path="../dms.js"/>
+/// <reference path="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.4/jasmine.js"/>
 
 describe("DmsCoordinates", function () {
-	var dmsCoords;
 	var long = -122.902336120571;
 	var lat = 46.9845854731319;
 
-	beforeEach(function () {
-		dmsCoords = new DmsCoordinates(lat, long);
-	});
-
 	it("(46.9845854731319, 46.9845854731319) coordinates should be ~ 46°59′5″ N, 122°54′8″ W", function () {
+		var dmsCoords = new DmsCoordinates(lat, long);
 		expect(dmsCoords instanceof DmsCoordinates).toBe(true);
 
 		var dmsArrays = dmsCoords.getDmsArrays();
@@ -33,5 +31,19 @@ describe("DmsCoordinates", function () {
 		v.forEach(function (s) {
 			expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true);
 		});
+	});
+
+	it("Invalid numbers should throw exception", function () {
+
+		
+		var x = DmsCoordinates.parseDms("");
+		expect(isNaN(x)).toBe(true);
+		expect(function () {
+			var dmsc = new DmsCoordinates(lat, x);
+		}).toThrowError(RangeError);
+		expect(function () {
+			var dmsc = new DmsCoordinates("this should fail", long);
+		}).toThrowError(TypeError);
+
 	});
 });

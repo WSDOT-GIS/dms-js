@@ -103,12 +103,17 @@
 	 * @alias module:dms
 	 * @param {number} latitude
 	 * @param {number} longitude
+	 * @throws {TypeError} - latitude and longitude must be numbers.
+	 * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
 	 */
 	function DmsCoordinates(latitude, longitude) {
-		if (longitude < -180 || longitude > 180) {
+		if (typeof latitude !== "number" || typeof longitude !== "number") {
+			throw TypeError("The longitude and latitude parameters must be numbers.");
+		}
+		if (isNaN(longitude) || longitude < -180 || longitude > 180) {
 			throw RangeError("longitude must be between -180 and 180");
 		}
-		if (latitude < -90 || latitude > 90) {
+		if (isNaN(latitude) || latitude < -90 || latitude > 90) {
 			throw RangeError("latitude must be between -90 and 90");
 		}
 		/** @member {number} */
