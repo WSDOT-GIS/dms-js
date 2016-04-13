@@ -1,7 +1,4 @@
-﻿/*global describe, it, DmsCoordinates, expect */
-/*jshint -W098 */
-/// <reference path="../dms.js"/>
-/// <reference path="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.4/jasmine.js"/>
+﻿var DmsCoordinates = require("../dms.js");
 
 describe("DmsCoordinates", function () {
 	var long = -122.902336120571;
@@ -34,8 +31,6 @@ describe("DmsCoordinates", function () {
 	});
 
 	it("Invalid numbers should throw exception", function () {
-
-		
 		var x = DmsCoordinates.parseDms("");
 		expect(isNaN(x)).toBe(true);
 		expect(function () {

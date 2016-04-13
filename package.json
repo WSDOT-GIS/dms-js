@@ -1,0 +1,34 @@
+{
+  "name": "dms",
+  "version": "1.0.0",
+  "description": "A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).",
+  "main": "dms.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WSDOT-GIS/dms-js.git"
+  },
+  "keywords": [
+    "DMS",
+    "decimal",
+    "degrees",
+    "degree",
+    "minute",
+    "second",
+    "GIS"
+  ],
+  "author": "WSDOT-GIS",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/WSDOT-GIS/dms-js/issues"
+  },
+  "homepage": "https://github.com/WSDOT-GIS/dms-js#readme",
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  }
+}
