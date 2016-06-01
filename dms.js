@@ -73,8 +73,8 @@
 
 
 	/**
-	 * Returns the DMS parts as an array. 
-	 * The first three elements of the returned array are numbers: 
+	 * Returns the DMS parts as an array.
+	 * The first three elements of the returned array are numbers:
 	 * degrees, minutes, and seconds respectively. The fourth
 	 * element is a string indicating the hemisphere: "N", "S", "E", or "W".
 	 * @returns {Array.<(number|string)>}
@@ -98,11 +98,11 @@
 
 
 	/**
-	 * @constructor
 	 * Represents a location on the earth in WGS 1984 coordinates.
+	 * @constructor
 	 * @alias module:dms
-	 * @param {number} latitude
-	 * @param {number} longitude
+	 * @param {number} latitude - WGS 84 Y coordinates
+	 * @param {number} longitude - WGS 84 X coordinates
 	 * @throws {TypeError} - latitude and longitude must be numbers.
 	 * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
 	 */
@@ -159,7 +159,7 @@
 
 	/**
 	 * A regular expression matching DMS coordinate.
-	 * Example matches: 
+	 * Example matches:
 	 * E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
 	 * E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
 	 * @type {RegExp}

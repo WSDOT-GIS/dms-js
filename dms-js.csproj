@@ -58,6 +58,9 @@
     <Content Include="README.md" />
     <Content Include="UNLICENSE" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README.hbs" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
