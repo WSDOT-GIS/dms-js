@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "jasmine",
-    "prepublish": "jsdoc2md dms.js --template README.hbs > README.md"
+    "prepublish": "tsc",
+    "doc": "jsdoc2md dms.js --template README.hbs > README.md"
   },
   "repository": {
     "type": "git",

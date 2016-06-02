@@ -60,17 +60,12 @@
 		return n > 0 ? Math.floor(n) : Math.ceil(n);
 	}
 
-
-
 	function Dms(dd, longOrLat) {
 		/** @member {number} */
 		this.dd = dd;
 		/** @member {string} */
 		this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
 	}
-
-
-
 
 	/**
 	 * Returns the DMS parts as an array.
