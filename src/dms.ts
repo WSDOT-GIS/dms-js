@@ -17,7 +17,7 @@ let dmsRe = /^(-?\d+(?:\.\d+)?)[°:d]?\s?(?:(\d+(?:\.\d+)?)['′ʹ:]?\s?(?:(\d+(
 // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
 // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
 
-
+type Direction = "W" | "E" | "S" | "N";
 
 /**
  * Removes the decimal part of a number without rounding up.
@@ -30,7 +30,7 @@ function truncate(n: number) {
 
 class Dms {
 	dd: number;
-	hemisphere: "W" | "E" | "S" | "N";
+	hemisphere: Direction;
 	constructor(dd: number, longOrLat: string) {
 		this.dd = dd;
 		this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
@@ -42,7 +42,7 @@ class Dms {
 	 * element is a string indicating the hemisphere: "N", "S", "E", or "W".
 	 * @returns {Array.<(number|string)>}
 	 */
-	getDmsArray(): Array<number | string> {
+	getDmsArray(): [number, number, number, Direction] {
 		let absDD = Math.abs(this.dd);
 		let degrees = truncate(absDD);
 		let minutes = truncate((absDD - degrees) * 60);
@@ -75,8 +75,14 @@ class DmsCoordinates {
 	 * @static
 	 */
 	static dmsRe: RegExp = dmsRe;
-	longitude: Dms;
-	latitude: Dms;
+	private _longitude: Dms;
+	private _latitude: Dms;
+	get longitude(): Dms {
+		return this._longitude;
+	}
+	get latitude(): Dms {
+		return this._latitude
+	}
 	/**
 	 * Represents a location on the earth in WGS 1984 coordinates.
 	 * @constructor
@@ -86,18 +92,18 @@ class DmsCoordinates {
 	 * @throws {TypeError} - latitude and longitude must be numbers.
 	 * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
 	 */
-	constructor(latitude: number, longitude: number) {
-		if (typeof latitude !== "number" || typeof longitude !== "number") {
+	constructor(private lat: number, private lon: number) {
+		if (typeof lat !== "number" || typeof lon !== "number") {
 			throw TypeError("The longitude and latitude parameters must be numbers.");
 		}
-		if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+		if (isNaN(lon) || lon < -180 || lon > 180) {
 			throw RangeError("longitude must be between -180 and 180");
 		}
-		if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+		if (isNaN(lat) || lat < -90 || lat > 90) {
 			throw RangeError("latitude must be between -90 and 90");
 		}
-		this.longitude = new Dms(longitude, "long");
-		this.latitude = new Dms(latitude, "lat");
+		this._longitude = new Dms(lon, "long");
+		this._latitude = new Dms(lat, "lat");
 	}
 
 	/**

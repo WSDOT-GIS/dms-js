@@ -1,4 +1,4 @@
-﻿var DmsCoordinates = require("../dms.js").default;
+﻿var DmsCoordinates = require("../src/dms.js").default;
 
 describe("DmsCoordinates", function () {
 	var long = -122.902336120571;
@@ -20,7 +20,7 @@ describe("DmsCoordinates", function () {
 		expect(Math.round(latArray[2])).toBe(5);
 		expect(latArray[3]).toBe("N");
 
-		expect(dmsCoords.toString().match(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i)).toBeTruthy();
+		expect(dmsCoords.toString().match(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i)).toBeTruthy(dmsCoords.toString());
 	});
 
 	it("Regexp should work", function () {
