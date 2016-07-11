@@ -1,4 +1,4 @@
-﻿/*global define,module*/
+/*global define,module*/
 
 /**
  * dms module

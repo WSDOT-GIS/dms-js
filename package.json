@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).",
   "main": "dms.js",
+  "types": "dms.d.ts",
   "directories": {
     "test": "test"
   },
