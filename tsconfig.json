@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es2015",
+        "noImplicitAny": true,
+        "sourceMap": false,
+        "outDir": "es6"
+    },
+    "files": [
+        "dms.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
