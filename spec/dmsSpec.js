@@ -1,4 +1,4 @@
-﻿var DmsCoordinates = require("../src/dms.js").default;
+﻿var DmsCoordinates = require("../dms.js").default;
 
 describe("DmsCoordinates", function () {
 	var long = -122.902336120571;

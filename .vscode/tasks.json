@@ -9,7 +9,7 @@
     "tasks": [
         {
           "taskName": "build",
-          "args": ["run-script", "prepublish"]  
+          "args": ["run-script", "build"]  
         },
         {
             "taskName": "install",
