@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jasmine",
-    "build:tsc": "tsc",
+    "build:tsc": "tsc && node scripts/movedts",
     "build:babel": "babel es2015/dms.js > dms.js",
     "build:docs": "jsdoc2md es2015/dms.js --template README.hbs > README.md",
     "build": "npm run build:tsc && npm run build:babel && npm run build:docs",
@@ -43,6 +43,7 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.8.0",
+    "fs-extra": "^0.30.0",
     "jasmine": "^2.4.1",
     "jsdoc-to-markdown": "^1.3.6",
     "typescript": "^1.8.10"

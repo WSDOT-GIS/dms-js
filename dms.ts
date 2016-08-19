@@ -17,7 +17,7 @@ let dmsRe = /^(-?\d+(?:\.\d+)?)[°:d]?\s?(?:(\d+(?:\.\d+)?)['′ʹ:]?\s?(?:(\d+(
 // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
 // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
 
-type Direction = "W" | "E" | "S" | "N";
+export type Direction = "W" | "E" | "S" | "N";
 
 /**
  * Removes the decimal part of a number without rounding up.
@@ -30,8 +30,9 @@ function truncate(n: number) {
 
 /**
  * Represents a DMS position
+ * @memberof module:dms
  */
-class Dms {
+export class Dms {
     dd: number;
     hemisphere: Direction;
     constructor(dd: number, longOrLat: string) {
@@ -63,9 +64,9 @@ class Dms {
 
 /**
  * Represents DMS coordinates.
- * @alias module:dms
+ * @memberof dms
  */
-class DmsCoordinates {
+export default class DmsCoordinates {
     // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
     // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
     // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
@@ -168,8 +169,4 @@ class DmsCoordinates {
         }
         return output;
     }
-
-
 }
-
-export default DmsCoordinates;
