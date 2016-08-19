@@ -4,7 +4,7 @@
         "target": "es2015",
         "noImplicitAny": true,
         "sourceMap": false,
-        "outDir": "es6"
+        "outDir": "es2015"
     },
     "files": [
         "dms.ts"

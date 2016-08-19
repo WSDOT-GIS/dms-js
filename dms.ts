@@ -25,136 +25,149 @@ type Direction = "W" | "E" | "S" | "N";
  * @returns {number}
  */
 function truncate(n: number) {
-	return n > 0 ? Math.floor(n) : Math.ceil(n);
+    return n > 0 ? Math.floor(n) : Math.ceil(n);
 }
 
+/**
+ * Represents a DMS position
+ */
 class Dms {
-	dd: number;
-	hemisphere: Direction;
-	constructor(dd: number, longOrLat: string) {
-		this.dd = dd;
-		this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
-	}
-	/**
-	 * Returns the DMS parts as an array.
-	 * The first three elements of the returned array are numbers:
-	 * degrees, minutes, and seconds respectively. The fourth
-	 * element is a string indicating the hemisphere: "N", "S", "E", or "W".
-	 * @returns {Array.<(number|string)>}
-	 */
-	getDmsArray(): [number, number, number, Direction] {
-		let absDD = Math.abs(this.dd);
-		let degrees = truncate(absDD);
-		let minutes = truncate((absDD - degrees) * 60);
-		let seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
-		return [degrees, minutes, seconds, this.hemisphere];
-	};
-	/**
-	 * Returns the DMS value as a string.
-	 */
-	toString(): string {
-		var dmsArray = this.getDmsArray();
-		return `${dmsArray[0]}°${dmsArray[1]}′${dmsArray[2]}″ ${dmsArray[3]}`;
-	};
+    dd: number;
+    hemisphere: Direction;
+    constructor(dd: number, longOrLat: string) {
+        this.dd = dd;
+        this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
+    }
+    /**
+     * Returns the DMS parts as an array.
+     * The first three elements of the returned array are numbers:
+     * degrees, minutes, and seconds respectively. The fourth
+     * element is a string indicating the hemisphere: "N", "S", "E", or "W".
+     * @returns {Array.<(number|string)>}
+     */
+    getDmsArray(): [number, number, number, Direction] {
+        let absDD = Math.abs(this.dd);
+        let degrees = truncate(absDD);
+        let minutes = truncate((absDD - degrees) * 60);
+        let seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
+        return [degrees, minutes, seconds, this.hemisphere];
+    };
+    /**
+     * Returns the DMS value as a string.
+     */
+    toString(): string {
+        let dmsArray = this.getDmsArray();
+        return `${dmsArray[0]}°${dmsArray[1]}′${dmsArray[2]}″ ${dmsArray[3]}`;
+    };
 }
 
-
-
-
+/**
+ * Represents DMS coordinates.
+ * @alias module:dms
+ */
 class DmsCoordinates {
-	// Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
-	// E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
-	// E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
+    // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
+    // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
+    // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
 
-	/**
-	 * A regular expression matching DMS coordinate.
-	 * Example matches:
-	 * E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
-	 * E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
-	 * @type {RegExp}
-	 * @static
-	 */
-	static dmsRe: RegExp = dmsRe;
-	private _longitude: Dms;
-	private _latitude: Dms;
-	get longitude(): Dms {
-		return this._longitude;
-	}
-	get latitude(): Dms {
-		return this._latitude
-	}
-	/**
-	 * Represents a location on the earth in WGS 1984 coordinates.
-	 * @constructor
-	 * @alias module:dms
-	 * @param {number} latitude - WGS 84 Y coordinates
-	 * @param {number} longitude - WGS 84 X coordinates
-	 * @throws {TypeError} - latitude and longitude must be numbers.
-	 * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
-	 */
-	constructor(private lat: number, private lon: number) {
-		if (typeof lat !== "number" || typeof lon !== "number") {
-			throw TypeError("The longitude and latitude parameters must be numbers.");
-		}
-		if (isNaN(lon) || lon < -180 || lon > 180) {
-			throw RangeError("longitude must be between -180 and 180");
-		}
-		if (isNaN(lat) || lat < -90 || lat > 90) {
-			throw RangeError("latitude must be between -90 and 90");
-		}
-		this._longitude = new Dms(lon, "long");
-		this._latitude = new Dms(lat, "lat");
-	}
+    /**
+     * A regular expression matching DMS coordinate.
+     * Example matches:
+     * E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
+     * E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
+     * @type {RegExp}
+     * @static
+     */
+    static dmsRe: RegExp = dmsRe;
+    private _longitude: Dms;
+    private _latitude: Dms;
 
-	/**
-	 * @typedef {Object} DmsArrays
-	 * @property {Array.<(number|string)>} longitude
-	 * @property {Array.<(number|string)>} latitude
-	 */
+    /**
+     * Longitude
+     * @member {Dms} longitude - Longitude (X coordinate);
+     */
+    get longitude(): Dms {
+        return this._longitude;
+    }
+    /**
+     * Latitude
+     * @member {Dms} longitude - Latitude (y coordinate);
+     */
+    get latitude(): Dms {
+        return this._latitude;
+    }
+    /**
+     * Represents a location on the earth in WGS 1984 coordinates.
+     * @constructor
+     * @alias module:dms
+     * @param {number} latitude - WGS 84 Y coordinates
+     * @param {number} longitude - WGS 84 X coordinates
+     * @throws {TypeError} - latitude and longitude must be numbers.
+     * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
+     */
+    constructor(private lat: number, private lon: number) {
+        if (typeof lat !== "number" || typeof lon !== "number") {
+            throw TypeError("The longitude and latitude parameters must be numbers.");
+        }
+        if (isNaN(lon) || lon < -180 || lon > 180) {
+            throw RangeError("longitude must be between -180 and 180");
+        }
+        if (isNaN(lat) || lat < -90 || lat > 90) {
+            throw RangeError("latitude must be between -90 and 90");
+        }
+        this._longitude = new Dms(lon, "long");
+        this._latitude = new Dms(lat, "lat");
+    }
 
-	/**
-	 * Returns an object containing arrays containing degree / minute / second components.
-	 * @returns {DmsArrays}
-	 */
-	getDmsArrays() {
-		return {
-			longitude: this.longitude.getDmsArray(),
-			latitude: this.latitude.getDmsArray()
-		};
-	};
+    /**
+     * @typedef {Object} DmsArrays
+     * @property {Array.<(number|string)>} longitude
+     * @property {Array.<(number|string)>} latitude
+     */
 
-	/**
-	 * Returns the coordinates to a comma-separated string.
-	 * @returns {string}
-	 */
-	toString() {
-		return [this.latitude, this.longitude].join(", ");
-	};
+    /**
+     * Returns an object containing arrays containing degree / minute / second components.
+     * @returns {DmsArrays}
+     */
+    getDmsArrays() {
+        return {
+            longitude: this.longitude.getDmsArray(),
+            latitude: this.latitude.getDmsArray()
+        };
+    };
 
-	/** Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
-	 * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
-	 * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
-	 */
-	static parseDms(dmsStr: string): number {
-		var output: number = NaN;
-		var dmsMatch = dmsRe.exec(dmsStr);
-		if (dmsMatch) {
-			let degrees = Number(dmsMatch[1]);
+    /**
+     * Returns the coordinates to a comma-separated string.
+     * @returns {string}
+     */
+    toString() {
+        return [this.latitude, this.longitude].join(", ");
+    };
 
-			let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
-			let seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
-			let hemisphere = dmsMatch[4] || null;
-			if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
-				degrees = Math.abs(degrees) * -1;
-			}
-			if (degrees < 0) {
-				output = degrees - minutes - seconds;
-			} else {
-				output = degrees + minutes + seconds;
-			}
-		}
-		return output;
-	}
+    /** Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
+     * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
+     * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
+     */
+    static parseDms(dmsStr: string): number {
+        let output: number = NaN;
+        let dmsMatch = dmsRe.exec(dmsStr);
+        if (dmsMatch) {
+            let degrees = Number(dmsMatch[1]);
+
+            let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
+            let seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
+            let hemisphere = dmsMatch[4] || null;
+            if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
+                degrees = Math.abs(degrees) * -1;
+            }
+            if (degrees < 0) {
+                output = degrees - minutes - seconds;
+            } else {
+                output = degrees + minutes + seconds;
+            }
+        }
+        return output;
+    }
 
 
 }

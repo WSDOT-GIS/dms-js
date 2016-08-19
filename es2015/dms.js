@@ -17,6 +17,9 @@ let dmsRe = /^(-?\d+(?:\.\d+)?)[°:d]?\s?(?:(\d+(?:\.\d+)?)['′ʹ:]?\s?(?:(\d+(
 function truncate(n) {
     return n > 0 ? Math.floor(n) : Math.ceil(n);
 }
+/**
+ * Represents a DMS position
+ */
 class Dms {
     constructor(dd, longOrLat) {
         this.dd = dd;
@@ -41,11 +44,15 @@ class Dms {
      * Returns the DMS value as a string.
      */
     toString() {
-        var dmsArray = this.getDmsArray();
+        let dmsArray = this.getDmsArray();
         return `${dmsArray[0]}°${dmsArray[1]}′${dmsArray[2]}″ ${dmsArray[3]}`;
     }
     ;
 }
+/**
+ * Represents DMS coordinates.
+ * @alias module:dms
+ */
 class DmsCoordinates {
     /**
      * Represents a location on the earth in WGS 1984 coordinates.
@@ -71,9 +78,17 @@ class DmsCoordinates {
         this._longitude = new Dms(lon, "long");
         this._latitude = new Dms(lat, "lat");
     }
+    /**
+     * Longitude
+     * @member {Dms} longitude - Longitude (X coordinate);
+     */
     get longitude() {
         return this._longitude;
     }
+    /**
+     * Latitude
+     * @member {Dms} longitude - Latitude (y coordinate);
+     */
     get latitude() {
         return this._latitude;
     }
@@ -106,8 +121,8 @@ class DmsCoordinates {
      * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
      */
     static parseDms(dmsStr) {
-        var output = NaN;
-        var dmsMatch = dmsRe.exec(dmsStr);
+        let output = NaN;
+        let dmsMatch = dmsRe.exec(dmsStr);
         if (dmsMatch) {
             let degrees = Number(dmsMatch[1]);
             let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
