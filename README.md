@@ -9,25 +9,23 @@ dms.js
 
 A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).
 
-<a name="module_dms"></a>
+```javascript
+    // Convert decimal degrees to DMS string.
+    var DmsCoordinates = require("dms.js").default;
 
-## dms
-dms module
+    var long = -122.902336120571;
+    var lat = 46.9845854731319;
+    var dmsCoords = new DmsCoordinates(lat, long);
+    console.log(dmsCoords.toString()) // 46°59′5″ N, 122°54′8″ W
 
+    // Get DMS coordinate parts as arrays.
+    var dmsArrays = dmsCoords.getDmsArrays();
+    var longArray = dmsArrays.longitude; // [122, 54, 8, "W"]
+    var latArray = dmsArrays.latitude; // [46, 59, 5, "N"]
+```
 
-* [dms](#module_dms)
-    * [exports.](#exp_module_dms--exports.) ⏏
-    * [module.exports](#exp_module_dms--module.exports) ⏏
-
-<a name="exp_module_dms--exports."></a>
-
-### exports. ⏏
-Represents a DMS position
-
-**Kind**: Exported class  
-<a name="exp_module_dms--module.exports"></a>
-
-### module.exports ⏏
-Represents DMS coordinates.
-
-**Kind**: Exported class  
+```javascript
+    // DMS to decimal degrees.
+    var dmsStrings = ["46°59′5″ N", "122°54′8″ W"];
+    var dmsCoords = dmsStrings.map(DmsCoordinates.parseDms); // [-122.902336120571, 46.9845854731319]
+```

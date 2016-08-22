@@ -18,7 +18,7 @@
     "build:tsc": "tsc && node scripts/movedts",
     "build:babel": "babel es2015/dms.js > dms.js",
     "build:docs": "jsdoc2md es2015/dms.js --template README.hbs > README.md",
-    "build": "npm run build:tsc && npm run build:babel && npm run build:docs",
+    "build": "npm run build:tsc && npm run build:babel",
     "prepublish": "npm run-script build"
   },
   "repository": {

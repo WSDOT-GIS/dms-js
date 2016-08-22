@@ -29,6 +29,9 @@ describe("DmsCoordinates", function () {
         v.forEach(function (s) {
             expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true);
         });
+        var xy = v.map(DmsCoordinates.parseDms);
+        expect(typeof xy[0]).toEqual("number");
+        expect(typeof xy[1]).toEqual("number");
     });
 
     it("Invalid numbers should throw exception", function () {

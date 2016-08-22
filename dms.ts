@@ -64,7 +64,7 @@ export class Dms {
 
 /**
  * Represents DMS coordinates.
- * @memberof dms
+ * @alias module:dms
  */
 export default class DmsCoordinates {
     // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
@@ -100,7 +100,6 @@ export default class DmsCoordinates {
     /**
      * Represents a location on the earth in WGS 1984 coordinates.
      * @constructor
-     * @alias module:dms
      * @param {number} latitude - WGS 84 Y coordinates
      * @param {number} longitude - WGS 84 X coordinates
      * @throws {TypeError} - latitude and longitude must be numbers.
