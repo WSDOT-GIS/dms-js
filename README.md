@@ -9,6 +9,21 @@ dms.js
 
 A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).
 
+Installation
+------------
+
+### NPM ###
+
+```
+npm install dms-conversion
+```
+
+### Bower ###
+
+```
+bower install dms
+```
+
 ```javascript
     // Convert decimal degrees to DMS string.
     var DmsCoordinates = require("dms.js").default;
