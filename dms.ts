@@ -1,5 +1,3 @@
-/*global define,module*/
-
 /**
  * dms module
  * @module dms
@@ -23,21 +21,42 @@ export type Direction = "W" | "E" | "S" | "N";
  * Removes the decimal part of a number without rounding up.
  * @param {number} n
  * @returns {number}
+ * @private
  */
 function truncate(n: number) {
     return n > 0 ? Math.floor(n) : Math.ceil(n);
 }
 
-/**
- * Represents a DMS position
- * @memberof module:dms
- */
 export class Dms {
-    dd: number;
-    hemisphere: Direction;
+    private _dd: number;
+    private _hemisphere: Direction;
+
+    /**
+     * Value in decimal degrees
+     * @member {number}
+     * @readonly
+     */
+    public get dd(): number {
+        return this._dd;
+    }
+
+    /**
+     * Hemisphere
+     * @member {string}
+     * @readonly
+     */
+    public get hemisphere(): Direction {
+        return this._hemisphere;
+    }
+
+    /**
+     * @constructor module:dms.Dms
+     * @param {number} dd
+     * @param {string} longOrLat
+     */
     constructor(dd: number, longOrLat: string) {
-        this.dd = dd;
-        this.hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
+        this._dd = dd;
+        this._hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
     }
     /**
      * Returns the DMS parts as an array.
@@ -45,16 +64,29 @@ export class Dms {
      * degrees, minutes, and seconds respectively. The fourth
      * element is a string indicating the hemisphere: "N", "S", "E", or "W".
      * @returns {Array.<(number|string)>}
+     * @deprecated
      */
     getDmsArray(): [number, number, number, Direction] {
-        let absDD = Math.abs(this.dd);
+        return this.dmsArray;
+    };
+
+    /**
+     * Returns the DMS parts as an array.
+     * The first three elements of the returned array are numbers:
+     * degrees, minutes, and seconds respectively. The fourth
+     * element is a string indicating the hemisphere: "N", "S", "E", or "W".
+     * @returns {Array.<(number|string)>}
+     */
+    get dmsArray(): [number, number, number, Direction] {
+        let absDD = Math.abs(this._dd);
         let degrees = truncate(absDD);
         let minutes = truncate((absDD - degrees) * 60);
         let seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
-        return [degrees, minutes, seconds, this.hemisphere];
+        return [degrees, minutes, seconds, this._hemisphere];
     };
     /**
      * Returns the DMS value as a string.
+     * @returns {string}
      */
     toString(): string {
         let dmsArray = this.getDmsArray();
@@ -63,9 +95,11 @@ export class Dms {
 }
 
 /**
- * Represents DMS coordinates.
- * @alias module:dms
+ * @typedef {Object} DmsArrays
+ * @property {Array.<(number|string)>} longitude
+ * @property {Array.<(number|string)>} latitude
  */
+
 export default class DmsCoordinates {
     // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
     // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
@@ -85,21 +119,21 @@ export default class DmsCoordinates {
 
     /**
      * Longitude
-     * @member {Dms} longitude - Longitude (X coordinate);
+     * @type {module:dms.Dms} longitude - Longitude (X coordinate);
      */
     get longitude(): Dms {
         return this._longitude;
     }
     /**
      * Latitude
-     * @member {Dms} longitude - Latitude (y coordinate);
+     * @type {module:dms.Dms} longitude - Latitude (y coordinate);
      */
     get latitude(): Dms {
         return this._latitude;
     }
     /**
      * Represents a location on the earth in WGS 1984 coordinates.
-     * @constructor
+     * @constructor module:dms.DmsCoordinates
      * @param {number} latitude - WGS 84 Y coordinates
      * @param {number} longitude - WGS 84 X coordinates
      * @throws {TypeError} - latitude and longitude must be numbers.
@@ -120,21 +154,25 @@ export default class DmsCoordinates {
     }
 
     /**
-     * @typedef {Object} DmsArrays
-     * @property {Array.<(number|string)>} longitude
-     * @property {Array.<(number|string)>} latitude
+     * Returns an object containing arrays containing degree / minute / second components.
+     * @returns {DmsArrays}
+     * @deprecated
      */
+    getDmsArrays() {
+        return this.dmsArrays;
+    };
 
     /**
      * Returns an object containing arrays containing degree / minute / second components.
-     * @returns {DmsArrays}
+     * @type {DmsArrays}
      */
-    getDmsArrays() {
+    public get dmsArrays() {
         return {
             longitude: this.longitude.getDmsArray(),
             latitude: this.latitude.getDmsArray()
         };
-    };
+    }
+
 
     /**
      * Returns the coordinates to a comma-separated string.
@@ -143,29 +181,30 @@ export default class DmsCoordinates {
     toString() {
         return [this.latitude, this.longitude].join(", ");
     };
+}
 
-    /** Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
-     * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
-     * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
-     */
-    static parseDms(dmsStr: string): number {
-        let output: number = NaN;
-        let dmsMatch = dmsRe.exec(dmsStr);
-        if (dmsMatch) {
-            let degrees = Number(dmsMatch[1]);
+/**
+ * Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
+ * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
+ * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
+ */
+export function parseDms(dmsStr: string): number {
+    let output: number = NaN;
+    let dmsMatch = dmsRe.exec(dmsStr);
+    if (dmsMatch) {
+        let degrees = Number(dmsMatch[1]);
 
-            let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
-            let seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
-            let hemisphere = dmsMatch[4] || null;
-            if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
-                degrees = Math.abs(degrees) * -1;
-            }
-            if (degrees < 0) {
-                output = degrees - minutes - seconds;
-            } else {
-                output = degrees + minutes + seconds;
-            }
+        let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
+        let seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
+        let hemisphere = dmsMatch[4] || null;
+        if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
+            degrees = Math.abs(degrees) * -1;
         }
-        return output;
+        if (degrees < 0) {
+            output = degrees - minutes - seconds;
+        } else {
+            output = degrees + minutes + seconds;
+        }
     }
+    return output;
 }

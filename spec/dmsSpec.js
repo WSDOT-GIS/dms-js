@@ -1,5 +1,6 @@
 /*eslint-env jasmine*/
 var DmsCoordinates = require("../dms.js").default;
+var parseDms = require("../dms.js").parseDms;
 
 describe("DmsCoordinates", function () {
     var long = -122.902336120571;
@@ -29,13 +30,13 @@ describe("DmsCoordinates", function () {
         v.forEach(function (s) {
             expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true);
         });
-        var xy = v.map(DmsCoordinates.parseDms);
+        var xy = v.map(parseDms);
         expect(typeof xy[0]).toEqual("number");
         expect(typeof xy[1]).toEqual("number");
     });
 
     it("Invalid numbers should throw exception", function () {
-        var x = DmsCoordinates.parseDms("");
+        var x = parseDms("");
         expect(isNaN(x)).toBe(true);
         expect(function () {
             var dmsc = new DmsCoordinates(lat, x); //eslint-disable-line no-unused-vars

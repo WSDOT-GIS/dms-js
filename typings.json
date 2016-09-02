@@ -1,7 +1,0 @@
-{
-  "name": "dms",
-  "dependencies": {},
-  "globalDevDependencies": {
-    "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359"
-  }
-}
