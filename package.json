@@ -5,7 +5,8 @@
   "main": "dms.js",
   "typings": "dms.d.ts",
   "files": [
-    "dms.d.ts"
+    "dms.d.ts",
+    "dms.js.map"
   ],
   "scripts": {
     "test": "jasmine",
