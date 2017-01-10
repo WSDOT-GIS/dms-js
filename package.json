@@ -26,12 +26,19 @@
     "second",
     "GIS"
   ],
-  "author": "WSDOT-GIS",
+  "engines": {
+    "node": ">=4"
+  },
+  "author": "WSDOT-GIS (https://github.com/WSDOT-GIS)",
+  "contributors": [
+    "Jeff Jacobson (https://github.com/JeffJacobson)"
+  ],
   "license": "Unlicense",
   "bugs": {
     "url": "https://github.com/WSDOT-GIS/dms-js/issues"
   },
   "homepage": "https://github.com/WSDOT-GIS/dms-js#readme",
+  "dependencies": { },
   "devDependencies": {
     "@types/jasmine": "^2.5.40",
     "jasmine": "^2.5.2",
