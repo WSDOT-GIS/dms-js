@@ -9,7 +9,7 @@
     "tasks": [
         {
           "taskName": "build",
-          "args": ["run-script", "build"]  
+          "args": ["run-script", "build"]
         },
         {
             "taskName": "install",
@@ -21,7 +21,8 @@
         },
         {
             "taskName": "test",
-            "args": ["run", "test"]
+            "isTestCommand": true,
+            "suppressTaskName": false
         }
     ]
 }

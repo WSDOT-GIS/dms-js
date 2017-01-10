@@ -1,51 +1,16 @@
-(function (global, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["exports"], factory);
-    } else if (typeof exports !== "undefined") {
-        factory(exports);
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports);
-        global.dms = mod.exports;
+/**
+ * dms module
+ * @module dms
+ */
+(function (dependencies, factory) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
-})(this, function (exports) {
+    else if (typeof define === 'function' && define.amd) {
+        define(dependencies, factory);
+    }
+})(["require", "exports"], function (require, exports) {
     "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.parseDms = parseDms;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _createClass = function () {
-        function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                var descriptor = props[i];
-                descriptor.enumerable = descriptor.enumerable || false;
-                descriptor.configurable = true;
-                if ("value" in descriptor) descriptor.writable = true;
-                Object.defineProperty(target, descriptor.key, descriptor);
-            }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);
-            if (staticProps) defineProperties(Constructor, staticProps);
-            return Constructor;
-        };
-    }();
-
-    /**
-     * dms module
-     * @module dms
-     */
     // Just return a value to define the module export.
     // This example returns an object, but the module
     // can return a function as the exported value.
@@ -61,44 +26,40 @@
     function truncate(n) {
         return n > 0 ? Math.floor(n) : Math.ceil(n);
     }
-
-    var Dms = exports.Dms = function () {
-        _createClass(Dms, [{
-            key: "dd",
-
+    var Dms = (function () {
+        /**
+         * @constructor module:dms.Dms
+         * @param {number} dd
+         * @param {string} longOrLat
+         */
+        function Dms(dd, longOrLat) {
+            this._dd = dd;
+            this._hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
+        }
+        Object.defineProperty(Dms.prototype, "dd", {
             /**
              * Value in decimal degrees
              * @member {number}
              * @readonly
              */
-            get: function get() {
+            get: function () {
                 return this._dd;
-            }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Dms.prototype, "hemisphere", {
             /**
              * Hemisphere
              * @member {string}
              * @readonly
              */
-
-        }, {
-            key: "hemisphere",
-            get: function get() {
+            get: function () {
                 return this._hemisphere;
-            }
-            /**
-             * @constructor module:dms.Dms
-             * @param {number} dd
-             * @param {string} longOrLat
-             */
-
-        }]);
-
-        function Dms(dd, longOrLat) {
-            _classCallCheck(this, Dms);
-
-            this._dd = dd;
-            this._hemisphere = /^[WE]|(?:lon)/i.test(longOrLat) ? dd < 0 ? "W" : "E" : dd < 0 ? "S" : "N";
-        }
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * Returns the DMS parts as an array.
          * The first three elements of the returned array are numbers:
@@ -107,27 +68,11 @@
          * @returns {Array.<(number|string)>}
          * @deprecated
          */
-
-
-        _createClass(Dms, [{
-            key: "getDmsArray",
-            value: function getDmsArray() {
-                return this.dmsArray;
-            }
-        }, {
-            key: "toString",
-
-            /**
-             * Returns the DMS value as a string.
-             * @returns {string}
-             */
-            value: function toString() {
-                var dmsArray = this.getDmsArray();
-                return dmsArray[0] + "\xB0" + dmsArray[1] + "\u2032" + dmsArray[2] + "\u2033 " + dmsArray[3];
-            }
-        }, {
-            key: "dmsArray",
-
+        Dms.prototype.getDmsArray = function () {
+            return this.dmsArray;
+        };
+        ;
+        Object.defineProperty(Dms.prototype, "dmsArray", {
             /**
              * Returns the DMS parts as an array.
              * The first three elements of the returned array are numbers:
@@ -135,19 +80,35 @@
              * element is a string indicating the hemisphere: "N", "S", "E", or "W".
              * @returns {Array.<(number|string)>}
              */
-            get: function get() {
+            get: function () {
                 var absDD = Math.abs(this._dd);
                 var degrees = truncate(absDD);
                 var minutes = truncate((absDD - degrees) * 60);
                 var seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
                 return [degrees, minutes, seconds, this._hemisphere];
-            }
-        }]);
-
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        /**
+         * Returns the DMS value as a string.
+         * @returns {string}
+         */
+        Dms.prototype.toString = function () {
+            var dmsArray = this.getDmsArray();
+            return dmsArray[0] + "\u00B0" + dmsArray[1] + "\u2032" + dmsArray[2] + "\u2033 " + dmsArray[3];
+        };
+        ;
         return Dms;
-    }();
-
-    var DmsCoordinates = function () {
+    }());
+    exports.Dms = Dms;
+    /**
+     * @typedef {Object} DmsArrays
+     * @property {Array.<(number|string)>} longitude
+     * @property {Array.<(number|string)>} latitude
+     */
+    var DmsCoordinates = (function () {
         /**
          * Represents a location on the earth in WGS 1984 coordinates.
          * @constructor module:dms.DmsCoordinates
@@ -157,8 +118,6 @@
          * @throws {RangeError} - latitude must be between -180 and 180, and longitude between -90 and 90. Neither can be NaN.
          */
         function DmsCoordinates(lat, lon) {
-            _classCallCheck(this, DmsCoordinates);
-
             this.lat = lat;
             this.lon = lon;
             if (typeof lat !== "number" || typeof lon !== "number") {
@@ -173,47 +132,61 @@
             this._longitude = new Dms(lon, "long");
             this._latitude = new Dms(lat, "lat");
         }
-        /**
-         * Longitude
-         * @type {module:dms.Dms} longitude - Longitude (X coordinate);
-         */
-
-
-        _createClass(DmsCoordinates, [{
-            key: "getDmsArrays",
-            value: function getDmsArrays() {
-                return this.dmsArrays;
-            }
-        }, {
-            key: "toString",
-            value: function toString() {
-                return [this.latitude, this.longitude].join(", ");
-            }
-        }, {
-            key: "longitude",
-            get: function get() {
+        Object.defineProperty(DmsCoordinates.prototype, "longitude", {
+            /**
+             * Longitude
+             * @type {module:dms.Dms} longitude - Longitude (X coordinate);
+             */
+            get: function () {
                 return this._longitude;
-            }
-        }, {
-            key: "latitude",
-            get: function get() {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DmsCoordinates.prototype, "latitude", {
+            /**
+             * Latitude
+             * @type {module:dms.Dms} longitude - Latitude (y coordinate);
+             */
+            get: function () {
                 return this._latitude;
-            }
-        }, {
-            key: "dmsArrays",
-            get: function get() {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * Returns an object containing arrays containing degree / minute / second components.
+         * @returns {DmsArrays}
+         * @deprecated
+         */
+        DmsCoordinates.prototype.getDmsArrays = function () {
+            return this.dmsArrays;
+        };
+        ;
+        Object.defineProperty(DmsCoordinates.prototype, "dmsArrays", {
+            /**
+             * Returns an object containing arrays containing degree / minute / second components.
+             * @type {DmsArrays}
+             */
+            get: function () {
                 return {
                     longitude: this.longitude.getDmsArray(),
                     latitude: this.latitude.getDmsArray()
                 };
-            }
-        }]);
-
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * Returns the coordinates to a comma-separated string.
+         * @returns {string}
+         */
+        DmsCoordinates.prototype.toString = function () {
+            return [this.latitude, this.longitude].join(", ");
+        };
+        ;
         return DmsCoordinates;
-    }();
-
-    exports.default = DmsCoordinates;
-
+    }());
     // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
     // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
     // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
@@ -226,6 +199,8 @@
      * @static
      */
     DmsCoordinates.dmsRe = dmsRe;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = DmsCoordinates;
     /**
      * Parses a Degrees Minutes Seconds string into a Decimal Degrees number.
      * @param {string} dmsStr A string containing a coordinate in either DMS or DD format.
@@ -236,18 +211,21 @@
         var dmsMatch = dmsRe.exec(dmsStr);
         if (dmsMatch) {
             var degrees = Number(dmsMatch[1]);
-            var minutes = typeof dmsMatch[2] !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
-            var seconds = typeof dmsMatch[3] !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
+            var minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
+            var seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
             var hemisphere = dmsMatch[4] || null;
             if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
                 degrees = Math.abs(degrees) * -1;
             }
             if (degrees < 0) {
                 output = degrees - minutes - seconds;
-            } else {
+            }
+            else {
                 output = degrees + minutes + seconds;
             }
         }
         return output;
     }
+    exports.parseDms = parseDms;
 });
+//# sourceMappingURL=dms.js.map

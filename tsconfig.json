@@ -1,16 +1,9 @@
 {
     "compilerOptions": {
-        "module": "es2015",
-        "target": "es2015",
+        "module": "umd",
+        "target": "es5",
         "noImplicitAny": true,
-        "sourceMap": false,
-        "outDir": "es2015",
-        "declaration": true
-    },
-    "files": [
-        "dms.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+        "strictNullChecks": true,
+        "sourceMap": true
+    }
 }

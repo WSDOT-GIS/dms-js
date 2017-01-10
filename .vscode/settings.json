@@ -1,11 +1,11 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
-        "es2015": true,
-        "**/*.{js,d.ts}": { "when": "$(basename).ts" },
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true
     }
+,
+"eslint.enable": false
 }
