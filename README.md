@@ -64,11 +64,6 @@ dms module
     * _static_
         * [.Dms](#module_dms.Dms)
             * [new Dms(dd, longOrLat)](#new_module_dms.Dms_new)
-            * [.dd](#module_dms.Dms+dd) : <code>number</code>
-            * [.hemisphere](#module_dms.Dms+hemisphere) : <code>string</code>
-            * [.dmsArray](#module_dms.Dms+dmsArray) ⇒ <code>Array.&lt;(number\|string)&gt;</code>
-            * ~~[.getDmsArray()](#module_dms.Dms+getDmsArray) ⇒ <code>Array.&lt;(number\|string)&gt;</code>~~
-            * [.toString()](#module_dms.Dms+toString) ⇒ <code>string</code>
         * [.DmsCoordinates](#module_dms.DmsCoordinates)
             * [new DmsCoordinates(latitude, longitude)](#new_module_dms.DmsCoordinates_new)
             * [.dmsRe](#module_dms.DmsCoordinates.dmsRe) : <code>RegExp</code>
@@ -112,15 +107,6 @@ Returns the coordinates to a comma-separated string.
 
 ### dms.Dms
 **Kind**: static class of <code>[dms](#module_dms)</code>  
-
-* [.Dms](#module_dms.Dms)
-    * [new Dms(dd, longOrLat)](#new_module_dms.Dms_new)
-    * [.dd](#module_dms.Dms+dd) : <code>number</code>
-    * [.hemisphere](#module_dms.Dms+hemisphere) : <code>string</code>
-    * [.dmsArray](#module_dms.Dms+dmsArray) ⇒ <code>Array.&lt;(number\|string)&gt;</code>
-    * ~~[.getDmsArray()](#module_dms.Dms+getDmsArray) ⇒ <code>Array.&lt;(number\|string)&gt;</code>~~
-    * [.toString()](#module_dms.Dms+toString) ⇒ <code>string</code>
-
 <a name="new_module_dms.Dms_new"></a>
 
 #### new Dms(dd, longOrLat)
@@ -130,40 +116,6 @@ Returns the coordinates to a comma-separated string.
 | dd | <code>number</code> | 
 | longOrLat | <code>string</code> | 
 
-<a name="module_dms.Dms+dd"></a>
-
-#### dms.dd : <code>number</code>
-Value in decimal degrees
-
-**Kind**: instance property of <code>[Dms](#module_dms.Dms)</code>  
-**Read only**: true  
-<a name="module_dms.Dms+hemisphere"></a>
-
-#### dms.hemisphere : <code>string</code>
-Hemisphere
-
-**Kind**: instance property of <code>[Dms](#module_dms.Dms)</code>  
-**Read only**: true  
-<a name="module_dms.Dms+dmsArray"></a>
-
-#### dms.dmsArray ⇒ <code>Array.&lt;(number\|string)&gt;</code>
-Returns the DMS parts as an array.The first three elements of the returned array are numbers:degrees, minutes, and seconds respectively. The fourthelement is a string indicating the hemisphere: "N", "S", "E", or "W".
-
-**Kind**: instance property of <code>[Dms](#module_dms.Dms)</code>  
-<a name="module_dms.Dms+getDmsArray"></a>
-
-#### ~~dms.getDmsArray() ⇒ <code>Array.&lt;(number\|string)&gt;</code>~~
-***Deprecated***
-
-Returns the DMS parts as an array.The first three elements of the returned array are numbers:degrees, minutes, and seconds respectively. The fourthelement is a string indicating the hemisphere: "N", "S", "E", or "W".
-
-**Kind**: instance method of <code>[Dms](#module_dms.Dms)</code>  
-<a name="module_dms.Dms+toString"></a>
-
-#### dms.toString() ⇒ <code>string</code>
-Returns the DMS value as a string.
-
-**Kind**: instance method of <code>[Dms](#module_dms.Dms)</code>  
 <a name="module_dms.DmsCoordinates"></a>
 
 ### dms.DmsCoordinates
