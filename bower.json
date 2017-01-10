@@ -21,6 +21,10 @@
   "license": "UNLICENSE",
   "ignore": [
     "**/.*",
+    "scripts",
+    "es2015",
+    "**/*.ts",
+    "**/ts*.json",
     "*.xlsx",
     "*.sln",
     "*.csproj",
