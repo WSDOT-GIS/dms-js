@@ -77,3 +77,8 @@ var dms = require("dms-conversion");
 var dmsStrings = ["46°59′5″ N", "122°54′8″ W"];
 var dmsCoords = dmsStrings.map(dms.parseDms); // [-122.902336120571, 46.9845854731319]
 ```
+
+Alternatives
+------------
+
+[nerik/formatcoords](https://github.com/nerik/formatcoords)
