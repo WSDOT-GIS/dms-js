@@ -12,73 +12,76 @@ A JavaScript library for converting between decimal degrees and degrees, minutes
 Installation
 ------------
 
-### NPM ###
-
-```
-npm install dms-conversion
+```console
+$ npm install dms-conversion
 ```
 
-### Bower ###
+or
 
-```
-bower install dms
-```
-
-### Import ###
-
-```javascript
-import { default as DmsCoordinates, parseDms } from "dms-conversion";
+```console
+$ yarn add dms-conversion
 ```
 
+### Example ###
 
-#### EcmaScript 2015 ####
-```javascript
-// Convert decimal degrees to DMS string.
-import DmsCoordinates from "dms-conversion";
+TypeScript example (from [Jasmine] test)
 
-let long = -122.902336120571;
-let lat = 46.9845854731319;
-let dmsCoords = new DmsCoordinates(lat, long);
-console.log(dmsCoords.toString()) // 46°59′5″ N, 122°54′8″ W
+```typescript
+import DmsCoordinates, { parseDms } from "../dms";
 
-// Get DMS coordinate parts as arrays.
-let dmsArrays = dmsCoords.getDmsArrays();
-let longArray = dmsArrays.longitude; // [122, 54, 8, "W"]
-let latArray = dmsArrays.latitude; // [46, 59, 5, "N"]
-```
+describe("DmsCoordinates", () => {
+    const long = -122.902336120571;
+    const lat = 46.9845854731319;
 
-```javascript
-// DMS to decimal degrees.
-import { parseDms } from "dms-conversion";
-let dmsStrings = ["46°59′5″ N", "122°54′8″ W"];
-let dmsCoords = dmsStrings.map(parseDms); // [-122.902336120571, 46.9845854731319]
-```
+    it(`(${lat}, ${long}) coordinates should be ~ 46°59′5″ N, 122°54′8″ W`, () => {
+        const dmsCoords = new DmsCoordinates(lat, long);
+        expect(dmsCoords instanceof DmsCoordinates).toBe(true);
 
-#### EcmaScript 5 ####
+        const {longitude, latitude} = dmsCoords.dmsArrays;
 
-```javascript
-// Convert decimal degrees to DMS string.
-var DmsCoordinates = require("dms-conversion").default;
+        let [d, m, s, nsew] = longitude;
+        expect(d).toBe(122);
+        expect(m).toBe(54);
+        expect(Math.round(s)).toBe(8);
+        expect(nsew).toBe("W");
 
-var long = -122.902336120571;
-var lat = 46.9845854731319;
-var dmsCoords = new DmsCoordinates(lat, long);
-console.log(dmsCoords.toString()) // 46°59′5″ N, 122°54′8″ W
+        [d, m, s, nsew] = latitude;
 
-// Get DMS coordinate parts as arrays.
-var dmsArrays = dmsCoords.getDmsArrays();
-var longArray = dmsArrays.longitude; // [122, 54, 8, "W"]
-var latArray = dmsArrays.latitude; // [46, 59, 5, "N"]
-```
+        expect(d).toBe(46);
+        expect(m).toBe(59);
+        expect(Math.round(s)).toBe(5);
+        expect(nsew).toBe("N");
 
-```javascript
-// DMS to decimal degrees.
-var dms = require("dms-conversion");
-var dmsStrings = ["46°59′5″ N", "122°54′8″ W"];
-var dmsCoords = dmsStrings.map(dms.parseDms); // [-122.902336120571, 46.9845854731319]
+        expect(dmsCoords.toString()).toMatch(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i);
+    });
+
+    it("Regexp should work", () => {
+        const v = ["46°59′5″ N", "122°54′8″ W"];
+        v.forEach((s) =>
+            expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true)
+        );
+        const [x, y] = v.map(parseDms);
+        expect(typeof x).toEqual("number");
+        expect(typeof y).toEqual("number");
+    });
+
+    it("Invalid numbers should throw exception", () => {
+        const x = parseDms("");
+        expect(isNaN(x)).toBe(true);
+        expect(() => {
+            const dmsc = new DmsCoordinates(lat, x);
+        }).toThrowError(RangeError);
+        expect(() => {
+            const dmsc = new DmsCoordinates("this should fail" as any, long);
+        }).toThrowError(TypeError);
+
+    });
+});
 ```
 
 Alternatives
 ------------
 
 [nerik/formatcoords](https://github.com/nerik/formatcoords)
+
+[Jasmine]:https://jasmine.github.io/

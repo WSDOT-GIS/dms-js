@@ -3,14 +3,13 @@
  * @module dms
  */
 
-
 // Just return a value to define the module export.
 // This example returns an object, but the module
 // can return a function as the exported value.
 
 // Matches DMS DmsCoordinates
 // http://regexpal.com/?flags=gim&regex=^%28-%3F\d%2B%28%3F%3A\.\d%2B%29%3F%29[%C2%B0%3Ad]%3F\s%3F%28%3F%3A%28\d%2B%28%3F%3A\.\d%2B%29%3F%29[%27%E2%80%B2%3A]%3F\s%3F%28%3F%3A%28\d%2B%28%3F%3A\.\d%2B%29%3F%29[%22%E2%80%B3]%3F%29%3F%29%3F\s%3F%28[NSEW]%29%3F&input=40%3A26%3A46N%2C79%3A56%3A55W%0A40%3A26%3A46.302N%2079%3A56%3A55.903W%0A40%C2%B026%E2%80%B247%E2%80%B3N%2079%C2%B058%E2%80%B236%E2%80%B3W%0A40d%2026%E2%80%B2%2047%E2%80%B3%20N%2079d%2058%E2%80%B2%2036%E2%80%B3%20W%0A40.446195N%2079.948862W%0A40.446195%2C%20-79.948862%0A40%C2%B0%2026.7717%2C%20-79%C2%B0%2056.93172%0A
-let dmsRe = /^(-?\d+(?:\.\d+)?)[°:d]?\s?(?:(\d+(?:\.\d+)?)['′ʹ:]?\s?(?:(\d+(?:\.\d+)?)["″ʺ]?)?)?\s?([NSEW])?/i;
+const dmsRe = /^(-?\d+(?:\.\d+)?)[°:d]?\s?(?:(\d+(?:\.\d+)?)['′ʹ:]?\s?(?:(\d+(?:\.\d+)?)["″ʺ]?)?)?\s?([NSEW])?/i;
 // Results of match will be [full coords string, Degrees, minutes (if any), seconds (if any), hemisphere (if any)]
 // E.g., ["40:26:46.302N", "40", "26", "46.302", "N"]
 // E.g., ["40.446195N", "40.446195", undefined, undefined, "N"]
@@ -28,7 +27,9 @@ function truncate(n: number) {
 }
 
 export class Dms {
+    // tslint:disable-next-line:variable-name
     private _dd: number;
+    // tslint:disable-next-line:variable-name
     private _hemisphere: Direction;
 
     /**
@@ -66,9 +67,9 @@ export class Dms {
      * @returns {Array.<(number|string)>}
      * @deprecated
      */
-    getDmsArray(): [number, number, number, Direction] {
+    public getDmsArray(): [number, number, number, Direction] {
         return this.dmsArray;
-    };
+    }
 
     /**
      * Returns the DMS parts as an array.
@@ -78,20 +79,20 @@ export class Dms {
      * @returns {Array.<(number|string)>}
      */
     get dmsArray(): [number, number, number, Direction] {
-        let absDD = Math.abs(this._dd);
-        let degrees = truncate(absDD);
-        let minutes = truncate((absDD - degrees) * 60);
-        let seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
+        const absDD = Math.abs(this._dd);
+        const degrees = truncate(absDD);
+        const minutes = truncate((absDD - degrees) * 60);
+        const seconds = (absDD - degrees - minutes / 60) * Math.pow(60, 2);
         return [degrees, minutes, seconds, this._hemisphere];
-    };
+    }
     /**
      * Returns the DMS value as a string.
      * @returns {string}
      */
-    toString(): string {
-        let dmsArray = this.getDmsArray();
+    public toString(): string {
+        const dmsArray = this.getDmsArray();
         return `${dmsArray[0]}°${dmsArray[1]}′${dmsArray[2]}″ ${dmsArray[3]}`;
-    };
+    }
 }
 
 /**
@@ -113,8 +114,10 @@ export default class DmsCoordinates {
      * @type {RegExp}
      * @static
      */
-    static dmsRe: RegExp = dmsRe;
+    public static dmsRe: RegExp = dmsRe;
+    // tslint:disable-next-line:variable-name
     private _longitude: Dms;
+    // tslint:disable-next-line:variable-name
     private _latitude: Dms;
 
     /**
@@ -158,9 +161,9 @@ export default class DmsCoordinates {
      * @returns {DmsArrays}
      * @deprecated
      */
-    getDmsArrays() {
+    public getDmsArrays() {
         return this.dmsArrays;
-    };
+    }
 
     /**
      * Returns an object containing arrays containing degree / minute / second components.
@@ -169,18 +172,17 @@ export default class DmsCoordinates {
     public get dmsArrays() {
         return {
             longitude: this.longitude.getDmsArray(),
-            latitude: this.latitude.getDmsArray()
+            latitude: this.latitude.getDmsArray(),
         };
     }
-
 
     /**
      * Returns the coordinates to a comma-separated string.
      * @returns {string}
      */
-    toString() {
+    public toString() {
         return [this.latitude, this.longitude].join(", ");
-    };
+    }
 }
 
 /**
@@ -190,13 +192,13 @@ export default class DmsCoordinates {
  */
 export function parseDms(dmsStr: string): number {
     let output: number = NaN;
-    let dmsMatch = dmsRe.exec(dmsStr);
+    const dmsMatch = dmsRe.exec(dmsStr);
     if (dmsMatch) {
         let degrees = Number(dmsMatch[1]);
 
-        let minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
-        let seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
-        let hemisphere = dmsMatch[4] || null;
+        const minutes = typeof (dmsMatch[2]) !== "undefined" ? Number(dmsMatch[2]) / 60 : 0;
+        const seconds = typeof (dmsMatch[3]) !== "undefined" ? Number(dmsMatch[3]) / 3600 : 0;
+        const hemisphere = dmsMatch[4] || null;
         if (hemisphere !== null && /[SW]/i.test(hemisphere)) {
             degrees = Math.abs(degrees) * -1;
         }

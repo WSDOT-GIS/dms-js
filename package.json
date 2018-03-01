@@ -1,6 +1,6 @@
 {
   "name": "dms-conversion",
-  "version": "3.0.0",
+  "version": "3.1.0-alpha.1",
   "description": "A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).",
   "main": "dms.js",
   "typings": "dms.d.ts",
@@ -8,10 +8,13 @@
     "dms.d.ts",
     "dms.js.map"
   ],
+  "directories": {
+    "lib": ".",
+    "test": "spec"
+  },
   "scripts": {
-    "test": "jasmine",
-    "build": "tsc",
-    "prepublish": "npm run-script build"
+    "prepare": "webpack",
+    "test": "tsc -p spec && jasmine"
   },
   "repository": {
     "type": "git",
@@ -38,10 +41,15 @@
     "url": "https://github.com/WSDOT-GIS/dms-js/issues"
   },
   "homepage": "https://github.com/WSDOT-GIS/dms-js#readme",
-  "dependencies": { },
+  "dependencies": {},
   "devDependencies": {
-    "@types/jasmine": "^2.5.40",
-    "jasmine": "^2.5.2",
-    "typescript": "^2.1.4"
+    "@types/jasmine": "^2.8.6",
+    "jasmine": "^3.1.0",
+    "source-map": "^0.7.2",
+    "ts-loader": "^4.0.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.0",
+    "webpack-cli": "^2.0.12"
   }
 }
