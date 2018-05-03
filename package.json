@@ -1,20 +1,22 @@
 {
   "name": "dms-conversion",
-  "version": "3.1.0-alpha.1",
+  "version": "3.1.1-alpha.1",
   "description": "A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).",
-  "main": "dms.js",
-  "typings": "dms.d.ts",
+  "main": "dist/node/dms.js",
+  "browser": "dist/browser/dms.js",
+  "module": "dist/esm/dms.js",
+  "typings": "dist/esm/dms.d.ts",
   "files": [
-    "dms.d.ts",
-    "dms.js.map"
+    "dist/*"
   ],
   "directories": {
-    "lib": ".",
+    "lib": "dist",
     "test": "spec"
   },
   "scripts": {
-    "prepare": "webpack",
-    "test": "tsc -p spec && jasmine"
+    "prepare": "tsc -p tsconfig.esm.json && tsc -p tsconfig.node.json && webpack",
+    "pretest": "tsc -p spec",
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
