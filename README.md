@@ -23,7 +23,7 @@ $ yarn add dms-conversion
 TypeScript example (from [Jasmine] test)
 
 ```typescript
-import DmsCoordinates, { parseDms } from "../dms";
+import DmsCoordinates, { parseDms } from "dms-conversion";
 
 describe("DmsCoordinates", () => {
     const long = -122.902336120571;
