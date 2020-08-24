@@ -57,4 +57,18 @@ describe("DmsCoordinates", () => {
     expect(dmsCoordsEast[0]).toEqual(dmsCoordsWest[0]);
     expect(dmsCoordsWest[1]).toBeLessThan(0);
   });
+
+  describe('toString() rounding', ()=>{
+    let dmsCoords: DmsCoordinates;
+    beforeEach(()=>{
+      dmsCoords = new DmsCoordinates(lat, long);
+    })
+    it('should be able to round digits in second', ()=>{
+      expect(dmsCoords.latitude.toString(3)).toEqual('46°59′4.508″ N');
+    })
+  
+    it('should not round when precision not provided', ()=>{
+      expect(dmsCoords.latitude.toString()).toMatch(/46°59′4.50770327\d+″ N/i);
+    })
+  })
 });
