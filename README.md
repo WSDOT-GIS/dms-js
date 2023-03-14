@@ -2,6 +2,10 @@
 
 A JavaScript library for converting between decimal degrees and degrees, minutes, and seconds (DMS).
 
+[![npm version](https://img.shields.io/npm/v/dms-conversion.svg)](https://www.npmjs.org/package/dms-conversion) [![npm license](https://img.shields.io/npm/l/dms-conversion.svg)](https://www.npmjs.org/package/dms-conversion)
+
+[![Node.js CI](https://github.com/WSDOT-GIS/dms-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/WSDOT-GIS/dms-js/actions/workflows/node.js.yml) [![GitHub issues](https://img.shields.io/github/issues/WSDOT-GIS/dms-js.svg)](https://github.com/WSDOT-GIS/dms-js/issues) [![GitHub](https://img.shields.io/github/forks/WSDOT-GIS/dms-js.svg?style=flat-square)](https://github.com/WSDOT-GIS/dms-js/forks)
+
 ## Installation
 
 ```console
