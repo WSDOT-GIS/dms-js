@@ -26,9 +26,9 @@ describe("DmsCoordinates", () => {
     expect(dmsCoords.toString()).toMatch(/46°59′4.\d+″ N, 122°54′8.\d+″ W/i);
   });
 
-  it("should be able to correclty parse DMS into decimal degrees", () => {
+  it("should be able to correctly parse DMS into decimal degrees", () => {
     const v = ["46°59′5″ N", "122°54′8″ W"];
-    v.forEach(s => expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy(true));
+    v.forEach(s => expect(s.match(DmsCoordinates.dmsRe)).toBeTruthy());
     const [y, x] = v.map(parseDms);
     expect(typeof x).toEqual("number");
     expect(typeof y).toEqual("number");
@@ -40,10 +40,10 @@ describe("DmsCoordinates", () => {
     const x = parseDms("");
     expect(isNaN(x)).toBe(true);
     expect(() => {
-      const dmsc = new DmsCoordinates(lat, x);
+      const dmsCoords = new DmsCoordinates(lat, x);
     }).toThrowError(RangeError);
     expect(() => {
-      const dmsc = new DmsCoordinates("this should fail" as any, long);
+      const dmsCoords = new DmsCoordinates("this should fail" as any, long);
     }).toThrowError(TypeError);
   });
 
