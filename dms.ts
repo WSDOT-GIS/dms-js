@@ -85,11 +85,13 @@ export class Dms {
     }
     /**
      * Returns the DMS value as a string.
+     * @param {number} [precision] - number of digits after the decimal point in seconds 
      * @returns {string}
      */
-    public toString(): string {
+    public toString(precision?: number): string {
         const dmsArray = this.getDmsArray();
-        return `${dmsArray[0]}°${dmsArray[1]}′${dmsArray[2]}″ ${dmsArray[3]}`;
+        const second = isNaN(Number(precision)) ? dmsArray[2] : dmsArray[2].toFixed(precision);
+        return `${dmsArray[0]}°${dmsArray[1]}′${second}″ ${dmsArray[3]}`;
     }
 }
 
