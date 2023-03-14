@@ -27,9 +27,7 @@ function truncate(n: number) {
 }
 
 export class Dms {
-    // tslint:disable-next-line:variable-name
     private _dd: number;
-    // tslint:disable-next-line:variable-name
     private _hemisphere: Direction;
 
     /**
@@ -115,9 +113,7 @@ export default class DmsCoordinates {
      * @static
      */
     public static dmsRe: RegExp = dmsRe;
-    // tslint:disable-next-line:variable-name
     private _longitude: Dms;
-    // tslint:disable-next-line:variable-name
     private _latitude: Dms;
 
     /**
@@ -171,8 +167,8 @@ export default class DmsCoordinates {
      */
     public get dmsArrays() {
         return {
-            longitude: this.longitude.getDmsArray(),
-            latitude: this.latitude.getDmsArray(),
+            longitude: this.longitude.dmsArray,
+            latitude: this.latitude.dmsArray,
         };
     }
 
@@ -191,7 +187,7 @@ export default class DmsCoordinates {
  * @return {Number} If dmsStr is a valid coordinate string, the value in decimal degrees will be returned. Otherwise NaN will be returned.
  */
 export function parseDms(dmsStr: string): number {
-    let output: number = NaN;
+    let output = NaN;
     const dmsMatch = dmsRe.exec(dmsStr);
     if (dmsMatch) {
         const degrees = Number(dmsMatch[1]);
