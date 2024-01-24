@@ -1,4 +1,4 @@
-import DmsCoordinates, { parseDms } from "../dms";
+import DmsCoordinates, { Dms, parseDms } from "../dms";
 
 describe("DmsCoordinates", () => {
   const long = -122.902336120571;
@@ -60,17 +60,33 @@ describe("DmsCoordinates", () => {
     expect(dmsCoordsWest[1]).toBeLessThan(0);
   });
 
-  describe('toString() rounding', ()=>{
-    let dmsCoords: DmsCoordinates;
-    beforeEach(()=>{
-      dmsCoords = new DmsCoordinates(lat, long);
-    })
-    it('should be able to round digits in second', ()=>{
-      expect(dmsCoords.latitude.toString(3)).toEqual('46°59′4.508″ N');
-    })
+  describe('Dms#toString() rounding', () => {
+    let dmsCoord: Dms;
+    beforeEach(() => {
+      dmsCoord = new Dms(lat, 'lat');
+    });
   
-    it('should not round when precision not provided', ()=>{
-      expect(dmsCoords.latitude.toString()).toMatch(/46°59′4.50770327\d+″ N/i);
-    })
-  })
+    it('should be able to round digits in second', () => {
+      expect(dmsCoord.toString(3)).toEqual('46°59′4.508″ N');
+    });
+  
+    it('should not round when precision not provided', () => {
+      expect(dmsCoord.toString()).toMatch(/46°59′4.50770327\d+″ N/i);
+    });
+  });
+
+  describe('DmsCoordinates#toString() rounding', () => {
+    let dmsCoords: DmsCoordinates;
+    beforeEach(() => {
+      dmsCoords = new DmsCoordinates(lat, long);
+    });
+
+    it('should be able to round digits in second', () => {
+      expect(dmsCoords.toString(3)).toEqual('46°59′4.508″ N, 122°54′8.410″ W');
+    });
+
+    it('should not round when precision not provided', () => {
+      expect(dmsCoords.toString()).toMatch(/46°59′4.50770327\d+″ N, 122°54′8.41003405\d+″ W/i);
+    });
+  });
 });

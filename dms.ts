@@ -85,13 +85,12 @@ export class Dms {
     }
     /**
      * Returns the DMS value as a string.
-     * @param {number} [precision] - number of digits after the decimal point in seconds 
+     * @param {number} [precision] - number of digits after the decimal point in seconds
      * @returns {string}
      */
     public toString(precision?: number): string {
-        const dmsArray = this.getDmsArray();
-        const second = isNaN(Number(precision)) ? dmsArray[2] : dmsArray[2].toFixed(precision);
-        return `${dmsArray[0]}°${dmsArray[1]}′${second}″ ${dmsArray[3]}`;
+        const second = isNaN(Number(precision)) ? this.dmsArray[2] : this.dmsArray[2].toFixed(precision);
+        return `${this.dmsArray[0]}°${this.dmsArray[1]}′${second}″ ${this.dmsArray[3]}`;
     }
 }
 
@@ -176,10 +175,11 @@ export default class DmsCoordinates {
 
     /**
      * Returns the coordinates to a comma-separated string.
+     * @param {number} [precision] - number of digits after the decimal point in seconds
      * @returns {string}
      */
-    public toString() {
-        return [this.latitude, this.longitude].join(", ");
+    public toString(precision?: number) {
+        return [this.latitude, this.longitude].map(dms => dms.toString(precision)).join(", ");
     }
 }
 
