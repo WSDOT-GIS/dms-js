@@ -73,6 +73,12 @@ describe("DmsCoordinates", () => {
     it('should not round when precision not provided', () => {
       expect(dmsCoord.toString()).toMatch(/46°59′4.50770327\d+″ N/i);
     });
+
+    it('should carry seconds that round to 60 into minutes and degrees', () => {
+      expect(new Dms(10.99999999, 'lat').toString(2)).toEqual('11°0′0.00″ N');
+      expect(new Dms(45.49999999, 'lat').toString(0)).toEqual('45°30′0″ N');
+      expect(new Dms(-0.99999999, 'long').toString(3)).toEqual('1°0′0.000″ W');
+    });
   });
 
   describe('DmsCoordinates#toString() rounding', () => {

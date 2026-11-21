@@ -89,8 +89,22 @@ export class Dms {
      * @returns {string}
      */
     public toString(precision?: number): string {
-        const second = isNaN(Number(precision)) ? this.dmsArray[2] : this.dmsArray[2].toFixed(precision);
-        return `${this.dmsArray[0]}°${this.dmsArray[1]}′${second}″ ${this.dmsArray[3]}`;
+        let [degrees, minutes, seconds] = this.dmsArray;
+        const hemisphere = this.dmsArray[3];
+        if (isNaN(Number(precision))) {
+            return `${degrees}°${minutes}′${seconds}″ ${hemisphere}`;
+        }
+        // Round the seconds first and carry, so that e.g. 59.9996″ is not printed as 60.00″
+        seconds = Number(seconds.toFixed(precision));
+        if (seconds >= 60) {
+            seconds -= 60;
+            minutes += 1;
+        }
+        if (minutes >= 60) {
+            minutes -= 60;
+            degrees += 1;
+        }
+        return `${degrees}°${minutes}′${seconds.toFixed(precision)}″ ${hemisphere}`;
     }
 }
 
